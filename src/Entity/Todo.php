@@ -5,9 +5,11 @@ namespace App\Entity;
 use App\Repository\TodoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use Symfony\Component\Validator\Constraints;
 
 #[ORM\Entity(repositoryClass: TodoRepository::class)]
-class Todo
+class Todo implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,6 +17,8 @@ class Todo
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Constraints\NotBlank]
+    #[Constraints\Length(max: 100)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -62,5 +66,15 @@ class Todo
         $this->finished = $finished;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'finished' => $this->finished
+        ];
     }
 }
