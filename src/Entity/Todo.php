@@ -9,6 +9,7 @@ use JsonSerializable;
 use Symfony\Component\Validator\Constraints;
 
 #[ORM\Entity(repositoryClass: TodoRepository::class)]
+#[ORM\Table(name: 'todos')]
 class Todo implements JsonSerializable
 {
     #[ORM\Id]
